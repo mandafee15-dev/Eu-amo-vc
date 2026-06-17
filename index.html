@@ -1,187 +1,255 @@
-      <!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Você</title>
+    <title>I Love You - Spotify Style</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+        :root {
+            --spotify-black: #121212;
+            --spotify-dark-grey: #181818;
+            --spotify-grey: #242424;
+            --spotify-light-grey: #b3b3b3;
+            --spotify-green: #1db954;
+            --spotify-white: #ffffff;
+        }
 
         body {
             margin: 0;
-            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--spotify-black);
+            color: var(--spotify-white);
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background-color: #f3ebfa; /* Fundo lilás bem clarinho */
-            font-family: 'Arial', sans-serif;
-            cursor: pointer;
-            user-select: none;
+            height: 100vh;
             overflow: hidden;
         }
 
-        /* Tela inicial */
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
+        .player-container {
+            background-color: var(--spotify-dark-grey);
+            padding: 24px;
+            border-radius: 12px;
+            width: 320px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+        }
+
+        .album-art {
             width: 100%;
-            height: 100%;
-            background-color: #f3ebfa;
+            height: 320px;
+            background: linear-gradient(135deg, #8e2de2, #4a00e0);
+            border-radius: 8px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 10;
-            transition: opacity 0.5s ease;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 60px rgba(0,0,0,0.5);
         }
 
-        .overlay h2 {
-            color: #8a2be2; /* Cor Roxa */
-            font-family: 'Caveat', cursive;
+        .album-art h1 {
             font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-align: center;
-            padding: 0 20px;
+            margin: 0;
+            color: var(--spotify-white);
+            animation: pulse 2s infinite alternate;
         }
 
-        .overlay p {
-            color: #777;
-            font-size: 1.1rem;
-            animation: pulse 1.5s infinite alternate;
+        .album-art .heart {
+            font-size: 3.5rem;
+            color: #ff3366;
+            margin-top: 10px;
+            animation: beat 0.6s infinite alternate;
+        }
+
+        .track-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .track-details {
+            max-width: 80%;
+        }
+
+        .track-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+        }
+
+        .track-artist {
+            font-size: 0.875rem;
+            color: var(--spotify-light-grey);
+            margin: 0;
+        }
+
+        .like-btn {
+            background: none;
+            border: none;
+            color: var(--spotify-green);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        .progress-container {
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background-color: var(--spotify-grey);
+            border-radius: 2px;
+            cursor: pointer;
+        }
+
+        .progress-current {
+            height: 100%;
+            width: 0%;
+            background-color: var(--spotify-white);
+            border-radius: 2px;
+        }
+
+        .progress-bar:hover .progress-current {
+            background-color: var(--spotify-green);
+        }
+
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--spotify-light-grey);
+            margin-top: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--spotify-light-grey);
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+
+        .control-btn:hover {
+            color: var(--spotify-white);
+        }
+
+        .play-btn {
+            background-color: var(--spotify-white);
+            color: var(--spotify-black);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            transition: transform 0.1s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.05);
         }
 
         @keyframes pulse {
-            0% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* Conteúdo do site */
-        .content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 1s ease 0.5s;
-        }
-
-        h1 {
-            color: #8a2be2;
-            font-family: 'Caveat', cursive;
-            font-size: 4rem;
-            margin: 0 0 30px 0;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        /* Coração Perfeito Sendo Desenhado */
-        svg {
-            width: 220px;
-            height: 220px;
-        }
-
-        .heart-path {
-            stroke: #8a2be2;
-            stroke-width: 5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            fill: rgba(138, 43, 226, 0);
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            transition: fill 0.5s ease-in-out 2.5s;
-        }
-
-        .draw-heart {
-            animation: draw 3s forwards ease-in-out;
-            fill: rgba(138, 43, 226, 1);
-        }
-
-        @keyframes draw {
-            to {
-                stroke-dashoffset: 0;
-            }
-        }
-
-        .heart-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .beat {
-            animation: beat .58s infinite alternate ease-in-out;
+            0% { transform: scale(0.98); }
+            100% { transform: scale(1.02); }
         }
 
         @keyframes beat {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.12); }
+            to { transform: scale(1.15); }
         }
     </style>
 </head>
 <body>
 
-    <!-- Tela de Convite -->
-    <div class="overlay" id="overlay">
-        <h2>Você recebeu uma mensagem especial...</h2>
-        <p>Clique na tela para abrir 💜</p>
-    </div>
+    <audio id="musicTrack" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
 
-    <!-- Conteúdo Principal -->
-    <div class="content" id="main-content">
-        <h1>Eu te amo</h1>
-        
-        <div class="heart-container" id="heart-box">
-            <svg viewBox="0 0 100 100">
-                <path class="heart-path" id="heart" d="M 50,30 
-                         C 60,10 90,10 90,40 
-                         C 90,65 70,80 50,95 
-                         C 30,80 10,65 10,40 
-                         C 10,10 40,10 50,30 Z" />
-            </svg>
+    <div class="player-container">
+        <div class="album-art">
+            <h1>I Love You</h1>
+            <div class="heart">❤️</div>
+        </div>
+
+        <div class="track-info">
+            <div class="track-details">
+                <p class="track-title">Raindance</p>
+                <p class="track-artist">Dave</p>
+            </div>
+            <button class="like-btn">💚</button>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-current" id="progressCurrent"></div>
+            </div>
+            <div class="time-info">
+                <span id="currentTime">0:00</span>
+                <span id="durationTime">0:00</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="control-btn">🔀</button>
+            <button class="control-btn">⏮</button>
+            <button class="control-btn play-btn" id="playBtn">▶</button>
+            <button class="control-btn">⏭</button>
+            <button class="control-btn">🔁</button>
         </div>
     </div>
 
-    <!-- Áudio DIRETO já cortado exatamente nos 2:48 com a Tems cantando -->
-<audio id="musica" preload="auto">
-    <source src="https://ia600204.us.archive.org/34/items/raindance-cut/raindance-cut.mp3" type="audio/mpeg">
-</audio>
+    <script>
+        const audio = document.getElementById('musicTrack');
+        const playBtn = document.getElementById('playBtn');
+        const progressCurrent = document.getElementById('progressCurrent');
+        const currentTimeElem = document.getElementById('currentTime');
+        const durationTimeElem = document.getElementById('durationTime');
 
-<script>
-    const sobreposicao = document.getElementById('sobreposicao');
-    const conteudoPrincipal = document.getElementById('conteudo principal');
-    const coracao = document.getElementById('coração');
-    const caixaDeCoracao = document.getElementById('caixa de coração');
-    const musica = document.getElementById('musica');
-
-    let jaClicou = false;
-
-    document.body.addEventListener('click', function() {
-        if (!jaClicou) {
-            jaClicou = true;
-
-            // Dá o play no áudio
-            musica.play().catch(e => console.error("Erro ao tocar:", e));
-
-            // Some com a tela de aviso
-            sobreposicao.style.opacity = '0';
-            setTimeout(() => sobreposicao.style.display = 'none', 500);
-
-            // Inicia o surgimento do texto e o desenho do coração
-            conteudoPrincipal.style.opacity = '1';
-            coracao.classList.add('desenhar-coracao');
-
-            // Faz o coração pulsar depois de terminar de desenhar
-            setTimeout(() => {
-                caixaDeCoracao.classList.add('bater');
-            }, 3000);
+        // Formata os segundos em formato MM:SS
+        function formatTime(seconds) {
+            let mins = Math.floor(seconds / 60);
+            let secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
-    });
-</script>
 
+        // Carrega a duração total assim que o áudio estiver pronto
+        audio.addEventListener('loadedmetadata', () => {
+            durationTimeElem.textContent = formatTime(audio.duration);
+        });
 
+        // Controla o Play / Pause de verdade
+        playBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+            }
+        });
+
+        // Atualiza a barra de progresso e o tempo rodando
+        audio.addEventListener('timeupdate', () => {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressCurrent.style.width = `${percent}%`;
+            currentTimeElem.textContent = formatTime(audio.currentTime);
+        });
+
+        // Reseta o botão quando a música acabar
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶';
+            progressCurrent.style.width = '0%';
+            currentTimeElem.textContent = '0:00';
+        });
+    </script>
 </body>
 </html>
-                   
+     

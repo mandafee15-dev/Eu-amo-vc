@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para Você</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght=700&display=swap');
 
         body {
             margin: 0;
@@ -15,7 +15,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: #f3ebfa; /* Fundo lilás clarinho */
+            background-color: #f3ebfa; /* Fundo lilás bem clarinho */
             font-family: 'Arial', sans-serif;
             cursor: pointer;
             user-select: none;
@@ -39,7 +39,7 @@
         }
 
         .overlay h2 {
-            color: #8a2be2;
+            color: #8a2be2; /* Cor Roxa */
             font-family: 'Caveat', cursive;
             font-size: 2.5rem;
             margin-bottom: 10px;
@@ -120,8 +120,8 @@
             100% { transform: scale(1.12); }
         }
 
-        /* Esconde o player do YouTube no fundo */
-        #youtube-player {
+        /* Oculta totalmente o player de vídeo no fundo */
+        #yt-player {
             position: absolute;
             width: 1px;
             height: 1px;
@@ -133,7 +133,7 @@
 <body>
 
     <div class="overlay" id="overlay">
-        <h2> KSKSKKS eu tentei...</h2>
+        <h2>Você recebeu uma mensagem especial...</h2>
         <p>Clique na tela para abrir 💜</p>
     </div>
 
@@ -151,15 +151,15 @@
         </div>
     </div>
 
-    <div id="youtube-player"></div>
+    <div id="yt-player"></div>
 
     <script>
         const overlay = document.getElementById('overlay');
         const mainContent = document.getElementById('main-content');
         const heart = document.getElementById('heart');
         const heartBox = document.getElementById('heart-box');
-        
-        // Carrega a API do YouTube
+
+        // Carrega os scripts do YouTube
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -167,12 +167,10 @@
 
         var player;
         function onYouTubeIframeAPIReady() {
-            player = new YT.Player('youtube-player', {
-                height: '1',
-                width: '1',
-                videoId: 't4yafKiE-5U', // O ID do seu vídeo
+            player = new YT.Player('yt-player', {
+                videoId: 't4yafKiE-5U', // ID do vídeo que você mandou
                 playerVars: {
-                    'start': 100,       // Começa em 2:48 exactos
+                    'start': 168,      // Pula direto para 2 minutos e 48 segundos (168s)
                     'loop': 1,
                     'playlist': 't4yafKiE-5U',
                     'controls': 0,
@@ -186,20 +184,21 @@
         document.body.addEventListener('click', function() {
             if (!ativado) {
                 ativado = true;
-                
-                // Dá o play no YouTube
+
+                // Toca a música direto do link que você mandou na hora exata
                 if (player && player.playVideo) {
                     player.playVideo();
                 }
                 
-                // Remove a tela inicial
+                // Transição de sumir com a tela cinza
                 overlay.style.opacity = '0';
                 setTimeout(() => overlay.style.display = 'none', 500);
                 
-                // Ativa a animação do coração roxo perfeito
+                // Ativa o surgimento do texto e o desenho animado do coração
                 mainContent.style.opacity = '1';
                 heart.classList.add('draw-heart');
                 
+                // Começa a pulsar depois que terminar de desenhar o contorno
                 setTimeout(() => {
                     heartBox.classList.add('beat');
                 }, 3000);

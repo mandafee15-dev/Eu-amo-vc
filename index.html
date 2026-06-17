@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Você</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #ffe6e6;
+            font-family: 'Arial', sans-serif;
+            cursor: pointer;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        /* Tela inicial */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffe6e6;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+
+        .overlay h2 {
+            color: #ff4d4d;
+            font-family: 'Caveat', cursive;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .overlay p {
+            color: #888;
+            font-size: 1.1rem;
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Conteúdo do site */
+        .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 1s ease 0.5s;
+        }
+
+        h1 {
+            color: #ff4d4d;
+            font-family: 'Caveat', cursive;
+            font-size: 4rem;
+            margin: 0 0 30px 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        /* Coração sendo desenhado */
+        svg {
+            width: 220px;
+            height: 220px;
+            transform: rotate(-90deg); /* Ajuste para o desenho começar perfeito */
+        }
+
+        .heart-path {
+            stroke: #ff4d4d;
+            stroke-width: 5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: rgba(255, 77, 77, 0);
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: fill 0.5s ease-in-out 2.5s;
+        }
+
+        .draw-heart {
+            animation: draw 3s forwards ease-in-out;
+            fill: rgba(255, 77, 77, 1);
+        }
+
+        @keyframes draw {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .heart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .beat {
+            animation: beat .58s infinite alternate ease-in-out;
+        }
+
+        @keyframes beat {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.12); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay">
+        <h2>Você recebeu uma mensagem especial...</h2>
+        <p>Clique na tela para abrir 💖</p>
+    </div>
+
+    <div class="content" id="main-content">
+        <h1>Eu te amo</h1>
+        
+        <div class="heart-container" id="heart-box">
+            <svg viewBox="0 0 100 100">
+                <path class="heart-path" id="heart" d="M 50,15 
+                         C 65,-5 95,-5 95,25 
+                         C 95,50 75,65 50,85 
+                         C 25,65 5,50 5,25 
+                         C 5,-5 35,-5 50,15 Z" />
+            </svg>
+        </div>
+    </div>
+
+    <audio id="musica" loop>
+        <source src="https://pub-c5e31b5cdafb419a86a69d5d340a9ade.r2.dev/raindance_dave_tems.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const overlay = document.getElementById('overlay');
+        const mainContent = document.getElementById('main-content');
+        const heart = document.getElementById('heart');
+        const heartBox = document.getElementById('heart-box');
+        const musica = document.getElementById('musica');
+
+        document.body.addEventListener('click', function() {
+            if (musica.paused) {
+                // Ativa a música do Dave & Tems
+                musica.play().catch(e => console.log("Aguardando clique inicial..."));
+                
+                // Transição suave para sumir com a tela inicial
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 500);
+                
+                // Torna o conteúdo visível e começa a desenhar as linhas do coração
+                mainContent.style.opacity = '1';
+                heart.classList.add('draw-heart');
+                
+                // Quando o traçado terminar (em 3 segundos), o coração começa a pulsar
+                setTimeout(() => {
+                    heartBox.classList.add('beat');
+                }, 3000);
+            }
+        });
+    </script>
+
+</body>
+</html>

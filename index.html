@@ -145,40 +145,42 @@
     </div>
 
     <!-- Áudio DIRETO já cortado exatamente nos 2:48 com a Tems cantando -->
-    <audio id="musica" loop preload="auto">
-        <source src="https://ia600204.us.archive.org/34/items/raindance-cut/raindance-cut.mp3" type="audio/mpeg">
-    </audio>
+<audio id="musica" preload="auto">
+    <source src="https://ia600204.us.archive.org/34/items/raindance-cut/raindance-cut.mp3" type="audio/mpeg">
+</audio>
 
-    <script>
-        const overlay = document.getElementById('overlay');
-        const mainContent = document.getElementById('main-content');
-        const heart = document.getElementById('heart');
-        const heartBox = document.getElementById('heart-box');
-        const musica = document.getElementById('musica');
+<script>
+    const sobreposicao = document.getElementById('sobreposicao');
+    const conteudoPrincipal = document.getElementById('conteudo principal');
+    const coracao = document.getElementById('coração');
+    const caixaDeCoracao = document.getElementById('caixa de coração');
+    const musica = document.getElementById('musica');
 
-        let ativado = false;
-        document.body.addEventListener('click', function() {
-            if (!ativado) {
-                ativado = true;
+    let jaClicou = false;
 
-                // Dá o play direto no áudio cortado sem delay
-                musica.play().catch(e => console.log("Erro ao tocar:", e));
-                
-                // Some com a tela de aviso
-                overlay.style.opacity = '0';
-                setTimeout(() => overlay.style.display = 'none', 500);
-                
-                // Inicia o surgimento do texto e o desenho do coração roxo perfeito
-                mainContent.style.opacity = '1';
-                heart.classList.add('draw-heart');
-                
-                // Faz o coração pulsar depois de terminar de desenhar
-                setTimeout(() => {
-                    heartBox.classList.add('beat');
-                }, 3000);
-            }
-        });
-    </script>
+    document.body.addEventListener('click', function() {
+        if (!jaClicou) {
+            jaClicou = true;
+
+            // Dá o play no áudio
+            musica.play().catch(e => console.error("Erro ao tocar:", e));
+
+            // Some com a tela de aviso
+            sobreposicao.style.opacity = '0';
+            setTimeout(() => sobreposicao.style.display = 'none', 500);
+
+            // Inicia o surgimento do texto e o desenho do coração
+            conteudoPrincipal.style.opacity = '1';
+            coracao.classList.add('desenhar-coracao');
+
+            // Faz o coração pulsar depois de terminar de desenhar
+            setTimeout(() => {
+                caixaDeCoracao.classList.add('bater');
+            }, 3000);
+        }
+    });
+</script>
+
 
 </body>
 </html>

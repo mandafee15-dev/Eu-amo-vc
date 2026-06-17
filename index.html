@@ -1,4 +1,4 @@
-        <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -119,17 +119,24 @@
             0% { transform: scale(1); }
             100% { transform: scale(1.12); }
         }
+
+        /* Esconde o player do YouTube no fundo */
+        #youtube-player {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Tela de Convite -->
     <div class="overlay" id="overlay">
-        <h2>PRA TI MEU AMOR...</h2>
+        <h2>Você recebeu uma mensagem especial...</h2>
         <p>Clique na tela para abrir 💜</p>
     </div>
 
-    <!-- Conteúdo Principal -->
     <div class="content" id="main-content">
         <h1>Eu te amo</h1>
         
@@ -144,26 +151,52 @@
         </div>
     </div>
 
-    <!-- ÁUDIO ATUALIZADO: Raindance (Dave ft. Tems) COMPLETA E CANTADA -->
-    <audio id="musica" loop>
-        <source src="https://raw.githubusercontent.com/mandafee15-dev/Eu-amo-vc/main/raindance.mp3" type="audio/mpeg">
-        <source src="https://pub-c5e31b5cdafb419a86a69d5d340a9ade.r2.dev/raindance_dave_tems.mp3" type="audio/mpeg">
-    </audio>
+    <div id="youtube-player"></div>
 
     <script>
         const overlay = document.getElementById('overlay');
         const mainContent = document.getElementById('main-content');
         const heart = document.getElementById('heart');
         const heartBox = document.getElementById('heart-box');
-        const musica = document.getElementById('musica');
+        
+        // Carrega a API do YouTube
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('youtube-player', {
+                height: '1',
+                width: '1',
+                videoId: 't4yafKiE-5U', // O ID do seu vídeo
+                playerVars: {
+                    'start': 168,       // Começa em 2:48 exactos
+                    'loop': 1,
+                    'playlist': 't4yafKiE-5U',
+                    'controls': 0,
+                    'showinfo': 0,
+                    'modestbranding': 1
+                }
+            });
+        }
+
+        let ativado = false;
         document.body.addEventListener('click', function() {
-            if (musica.paused) {
-                musica.play().catch(e => console.log("Aguardando clique..."));
+            if (!ativado) {
+                ativado = true;
                 
+                // Dá o play no YouTube
+                if (player && player.playVideo) {
+                    player.playVideo();
+                }
+                
+                // Remove a tela inicial
                 overlay.style.opacity = '0';
                 setTimeout(() => overlay.style.display = 'none', 500);
                 
+                // Ativa a animação do coração roxo perfeito
                 mainContent.style.opacity = '1';
                 heart.classList.add('draw-heart');
                 
@@ -176,3 +209,4 @@
 
 </body>
 </html>
+

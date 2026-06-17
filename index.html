@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Para Você</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght=700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 
         body {
             margin: 0;
@@ -119,24 +119,17 @@
             0% { transform: scale(1); }
             100% { transform: scale(1.12); }
         }
-
-        /* Oculta totalmente o player de vídeo no fundo */
-        #yt-player {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
     </style>
 </head>
 <body>
 
+    <!-- Tela de Convite -->
     <div class="overlay" id="overlay">
         <h2>Você recebeu uma mensagem especial...</h2>
         <p>Clique na tela para abrir 💜</p>
     </div>
 
+    <!-- Conteúdo Principal -->
     <div class="content" id="main-content">
         <h1>Eu te amo</h1>
         
@@ -151,54 +144,35 @@
         </div>
     </div>
 
-    <div id="yt-player"></div>
+    <!-- Áudio DIRETO já cortado exatamente nos 2:48 com a Tems cantando -->
+    <audio id="musica" loop preload="auto">
+        <source src="https://ia600204.us.archive.org/34/items/raindance-cut/raindance-cut.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
         const overlay = document.getElementById('overlay');
         const mainContent = document.getElementById('main-content');
         const heart = document.getElementById('heart');
         const heartBox = document.getElementById('heart-box');
-
-        // Carrega os scripts do YouTube
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('yt-player', {
-                videoId: 't4yafKiE-5U', // ID do vídeo que você mandou
-                playerVars: {
-                    'start': 168,      // Pula direto para 2 minutos e 48 segundos (168s)
-                    'loop': 1,
-                    'playlist': 't4yafKiE-5U',
-                    'controls': 0,
-                    'showinfo': 0,
-                    'modestbranding': 1
-                }
-            });
-        }
+        const musica = document.getElementById('musica');
 
         let ativado = false;
         document.body.addEventListener('click', function() {
             if (!ativado) {
                 ativado = true;
 
-                // Toca a música direto do link que você mandou na hora exata
-                if (player && player.playVideo) {
-                    player.playVideo();
-                }
+                // Dá o play direto no áudio cortado sem delay
+                musica.play().catch(e => console.log("Erro ao tocar:", e));
                 
-                // Transição de sumir com a tela cinza
+                // Some com a tela de aviso
                 overlay.style.opacity = '0';
                 setTimeout(() => overlay.style.display = 'none', 500);
                 
-                // Ativa o surgimento do texto e o desenho animado do coração
+                // Inicia o surgimento do texto e o desenho do coração roxo perfeito
                 mainContent.style.opacity = '1';
                 heart.classList.add('draw-heart');
                 
-                // Começa a pulsar depois que terminar de desenhar o contorno
+                // Faz o coração pulsar depois de terminar de desenhar
                 setTimeout(() => {
                     heartBox.classList.add('beat');
                 }, 3000);
@@ -208,4 +182,4 @@
 
 </body>
 </html>
-
+                   
